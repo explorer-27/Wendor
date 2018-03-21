@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:text="ItemName"
+        android:textColor="@color/blackShade"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/tvPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvName"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:text=" Price"
+        android:textColor="@color/blackShade"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/etQty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tvPrice"
+        android:layout_margin="5dp"
+        android:layout_marginTop="0dp"
+        android:ems="10"
+        android:hint="Enter Quantites"
+        android:inputType="number"
+        android:textColor="@color/blackShade" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etQty"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <Button
+            android:id="@+id/btnNo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+
+            android:background="@drawable/buttons"
+            android:text="No"
+            android:textColor="@color/blackShade" />
+
+        <Button
+            android:id="@+id/btnYes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:background="@drawable/buttons"
+            android:text="Yes"
+            android:textColor="@color/blackShade" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
