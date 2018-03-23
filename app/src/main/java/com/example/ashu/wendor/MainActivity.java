@@ -2,6 +2,7 @@ package com.example.ashu.wendor;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -19,12 +20,13 @@ import android.widget.Toast;
 
 import com.example.ashu.wendor.Images.CustomSwipeAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     static ViewPager viewPager;
     static ArrayList<Items> list;
-    static ArrayList<String> cartlist;
+    static ArrayList<CartItems> cartlist;
     static int currentPos;
     CustomSwipeAdapter adapter;
 
@@ -53,9 +55,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemSelected = item.getItemId();
         if (itemSelected == R.id.cartmenu) {
-            Intent i = new Intent(this, CartActivity.class);
-            i.putStringArrayListExtra("cartList", cartlist);
-            startActivity(i);
+
+            Intent intent = new Intent(MainActivity.this, CartActivity.class);
+
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
 
@@ -67,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         final int itemId = currentItem.getItemId();
         final String itemName = currentItem.getName();
-        int price = currentItem.getPrice();
+        final int price = currentItem.getPrice();
         final int leftQty = currentItem.getLeftUnit();
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -95,16 +98,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     qtyEntered = Integer.parseInt(mQty.getText().toString());
                     if (qtyEntered > 0 && qtyEntered <= leftQty) {
 
-                        cartlist.add(itemName);
+                        CartItems cartItem = new CartItems();
+                        cartItem.setItemId(itemId);
+                        cartItem.setItemName(itemName);
+                        cartItem.setPrice(price);
+                        cartItem.setQtyEntered(qtyEntered);
+                        cartItem.setTotalEach(qtyEntered * price);
+
+                        cartlist.add(cartItem);
                         dialog.dismiss();
                     } else {
                         Toast.makeText(MainActivity.this,
                                 "Please Enter Correct Qty",
                                 Toast.LENGTH_SHORT).show();
                     }
-                    /*Intent i=new Intent(MainActivity.this,CartActivity.class);
-                    i.putStringArrayListExtra("cartList",cartlist);
-                        startActivity(i);*/
+
                 } catch (NumberFormatException e) {
                     Toast.makeText(MainActivity.this,
                             "Please Enter Correct Qty",
@@ -123,11 +131,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mBuilder.setView(null);
 
 
-        // Toast.makeText(this,""+currentItem.getItemId(),Toast.LENGTH_SHORT).show();
-/*
-      Intent i=new Intent(this,CartActivity.class);
-        i.putExtra("postiton", currentItem.getName());
-        startActivity(i);*/
     }
 
 
