@@ -5,7 +5,9 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,20 +20,28 @@ import com.squareup.picasso.Target;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 /**
  * Created by ashu on 20/3/18.
  */
 
 public class ImageLoader extends AppCompatActivity {
+    static Target t;
     Context c;
+    String myImageName;
     private String imageDir = "imageDir";
+
 
     public ImageLoader(Context context) {
         c = context;
     }
 
     public void downloadSaveImageFromUrl(String url, String imageName) {
+
+        myImageName = imageName;
+        //  new DownloadImage().execute(url);
         Picasso.with(c).load(url).into(picassoImageTarget(c, imageDir, imageName));
     }
 
@@ -40,16 +50,19 @@ public class ImageLoader extends AppCompatActivity {
         Log.d("picassoImageTarget", " picassoImageTarget");
         ContextWrapper cw = new ContextWrapper(context);
         final File directory = cw.getDir(imageDir, Context.MODE_PRIVATE);
-        Log.d("picassoImageTarget", " " + directory.getAbsolutePath());
+        // Log.d("picassoImageTarget", " " + directory.getAbsolutePath());
         // path to /data/data/yourapp/app_imageDir
-        final Target t = new Target() {
+
+        t = new Target() {
             @Override
             public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         final File myImageFile = new File(directory, imageName);
-                        Toast.makeText(context, "" + myImageFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();// Create image file
+                        Log.i("bitmap", "" + myImageFile.getAbsolutePath());
+
+                        //Toast.makeText(context, "" + myImageFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();// Create image file
                         FileOutputStream fos = null;
                         try {
                             fos = new FileOutputStream(myImageFile);
@@ -86,6 +99,7 @@ public class ImageLoader extends AppCompatActivity {
                 }
             }
         };
+
         return t;
     }
 

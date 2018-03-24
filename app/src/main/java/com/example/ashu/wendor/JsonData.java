@@ -47,6 +47,7 @@ public class JsonData {
                     imageLoader.downloadSaveImageFromUrl(imageUrl, name);
                     String imagePath = imageLoader.getFileLocation(name);
 
+
                     cv.put(WendorContentProvider.imagePath, imagePath);
 
                     activity.getContentResolver().insert(

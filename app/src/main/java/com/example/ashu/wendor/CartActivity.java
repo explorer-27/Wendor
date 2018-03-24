@@ -26,7 +26,7 @@ public class CartActivity extends AppCompatActivity {
         cartList = MainActivity.cartlist;
 
         itemsAdapter = new CartAdapter(CartActivity.this, cartList);
-        listView = (ListView) findViewById(R.id.listView);
+        listView = findViewById(R.id.listViewCart);
         listView.setAdapter(itemsAdapter);
 
         total = findViewById(R.id.total);
