@@ -40,20 +40,14 @@
 
     </LinearLayout>
 
-    <HorizontalScrollView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/myRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3">
 
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-        </ListView>
-
-
-    </HorizontalScrollView>
+    </android.support.v7.widget.RecyclerView>
 
 
 </LinearLayout>

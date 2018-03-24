@@ -1,4 +1,4 @@
-package com.example.ashu.wendor;
+package com.example.ashu.wendor.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.ashu.wendor.CartActivity;
+import com.example.ashu.wendor.CartItems;
+import com.example.ashu.wendor.R;
 
 import java.util.ArrayList;
 
@@ -37,12 +41,12 @@ public class CartAdapter extends ArrayAdapter<CartItems> {
         final CartItems currentItem = getItem(position);
 
         TextView tvPrice, tvQty, tvName, tvTotalEach;
-        tvName = (TextView) listItemView.findViewById(R.id.itemNameCartItem);
-        tvPrice = (TextView) listItemView.findViewById(R.id.priceCartItem);
-        tvQty = (TextView) listItemView.findViewById(R.id.qtyCartItem);
-        tvTotalEach = (TextView) listItemView.findViewById(R.id.totalEachCartItem);
+        tvName = listItemView.findViewById(R.id.itemNameCartItem);
+        tvPrice = listItemView.findViewById(R.id.priceCartItem);
+        tvQty = listItemView.findViewById(R.id.qtyCartItem);
+        tvTotalEach = listItemView.findViewById(R.id.totalEachCartItem);
 
-        ImageButton remove = (ImageButton) listItemView.findViewById(R.id.removeButton);
+        ImageButton remove = listItemView.findViewById(R.id.removeButton);
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

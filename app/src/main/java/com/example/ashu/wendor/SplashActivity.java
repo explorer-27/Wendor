@@ -12,10 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.ashu.wendor.Utility.JsonData;
+import com.example.ashu.wendor.Utility.NetworkUtility;
+
 import java.net.URL;
 
 public class SplashActivity extends AppCompatActivity {
-    static Context appContext;
+    public static Context appContext;
     boolean InternetStatus;
     private String imageDir = "imageDir";
 

@@ -1,4 +1,4 @@
-package com.example.ashu.wendor.Images;
+package com.example.ashu.wendor.Adapters;
 
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -44,7 +44,7 @@ public class CustomSwipeAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return (view == (RelativeLayout) object);
+        return (view == object);
     }
 
     @Override

@@ -1,9 +1,11 @@
-package com.example.ashu.wendor;
+package com.example.ashu.wendor.Utility;
 
 import android.app.Activity;
 import android.content.ContentValues;
 
-import com.example.ashu.wendor.Images.ImageLoader;
+import com.example.ashu.wendor.SplashActivity;
+import com.example.ashu.wendor.Utility.ImageLoader;
+import com.example.ashu.wendor.WendorContentProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;

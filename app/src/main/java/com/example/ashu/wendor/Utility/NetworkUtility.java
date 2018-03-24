@@ -1,4 +1,4 @@
-package com.example.ashu.wendor;
+package com.example.ashu.wendor.Utility;
 
 import android.net.Uri;
 

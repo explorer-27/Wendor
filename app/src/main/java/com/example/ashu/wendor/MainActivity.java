@@ -3,7 +3,6 @@ package com.example.ashu.wendor;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -11,18 +10,19 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ashu.wendor.Images.CustomSwipeAdapter;
+import com.example.ashu.wendor.Adapters.CommonAdapter;
+import com.example.ashu.wendor.Adapters.CustomSwipeAdapter;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -31,22 +31,35 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     static ArrayList<CartItems> cartlist;
     static int currentPos;
     static CustomSwipeAdapter adapter;
-    static CommonAdapter commonAdapter;
     Button addToCart;
-    ListView listView;
+    // ListView listView;
     Context context;
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
 
+        mRecyclerView = findViewById(R.id.myRecyclerView);
+
+        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
         list = new ArrayList<>();
         cartlist = new ArrayList<>();
+
+
+        // specify an adapter (see also next example)
+
+
         getSupportLoaderManager().initLoader(0, null, this);
 
-        listView = findViewById(R.id.listView);
+        // listView = findViewById(R.id.listView);
 
         viewPager = findViewById(R.id.view_pager);
         addToCart = findViewById(R.id.add_to_cart);
@@ -185,8 +198,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         adapter = new CustomSwipeAdapter(context, list);
         viewPager.setAdapter(adapter);
 
-        commonAdapter = new CommonAdapter(context, list);
-        listView.setAdapter(commonAdapter);
+
+        mAdapter = new CommonAdapter(context, list);
+        mRecyclerView.setAdapter(mAdapter);
 
 
     }

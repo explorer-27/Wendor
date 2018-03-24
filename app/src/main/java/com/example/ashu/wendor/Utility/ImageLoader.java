@@ -1,17 +1,11 @@
-package com.example.ashu.wendor.Images;
+package com.example.ashu.wendor.Utility;
 
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -20,8 +14,6 @@ import com.squareup.picasso.Target;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 
 /**
  * Created by ashu on 20/3/18.
@@ -41,17 +33,10 @@ public class ImageLoader extends AppCompatActivity {
     public void downloadSaveImageFromUrl(String url, String imageName) {
 
         myImageName = imageName;
-        //  new DownloadImage().execute(url);
-        Picasso.with(c).load(url).into(picassoImageTarget(c, imageDir, imageName));
-    }
 
-
-    private Target picassoImageTarget(final Context context, final String imageDir, final String imageName) {
-        Log.d("picassoImageTarget", " picassoImageTarget");
-        ContextWrapper cw = new ContextWrapper(context);
+        ContextWrapper cw = new ContextWrapper(c);
         final File directory = cw.getDir(imageDir, Context.MODE_PRIVATE);
-        // Log.d("picassoImageTarget", " " + directory.getAbsolutePath());
-        // path to /data/data/yourapp/app_imageDir
+
 
         t = new Target() {
             @Override
@@ -59,7 +44,7 @@ public class ImageLoader extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        final File myImageFile = new File(directory, imageName);
+                        final File myImageFile = new File(directory, myImageName);
                         Log.i("bitmap", "" + myImageFile.getAbsolutePath());
 
                         //Toast.makeText(context, "" + myImageFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();// Create image file
@@ -100,7 +85,7 @@ public class ImageLoader extends AppCompatActivity {
             }
         };
 
-        return t;
+        Picasso.with(c).load(url).into(t);
     }
 
     public String getFileLocation(String path) {
