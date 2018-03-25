@@ -12,18 +12,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.ashu.wendor.Utility.JsonData;
+import com.example.ashu.wendor.Utility.NetworkUtility;
+
 import java.net.URL;
 
 public class SplashActivity extends AppCompatActivity {
-    static Context appContext;
+    public static Context appContext;
     boolean InternetStatus;
-    private String imageDir = "imageDir";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        appContext = getApplicationContext();
+        appContext = this;
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 
         new Handler().postDelayed(new Runnable() {
@@ -80,6 +82,7 @@ public class SplashActivity extends AppCompatActivity {
             String searchResults = null;
             try {
                 InternetStatus = checkInternet();
+                Log.i("Internet Status", "" + InternetStatus);
                 if (InternetStatus)
                     searchResults = NetworkUtility.getResponseFromHttpUrl(searchUrl);
                 else

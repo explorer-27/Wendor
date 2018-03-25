@@ -1,9 +1,11 @@
-package com.example.ashu.wendor;
+package com.example.ashu.wendor.Utility;
 
 import android.app.Activity;
 import android.content.ContentValues;
 
-import com.example.ashu.wendor.Images.ImageLoader;
+import com.example.ashu.wendor.SplashActivity;
+import com.example.ashu.wendor.Utility.ImageLoader;
+import com.example.ashu.wendor.WendorContentProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,19 +37,20 @@ public class JsonData {
                     String imageUrl = eachItem.getString("image_url");
 
                     ContentValues cv = new ContentValues();
-                    cv.put(WendorContentProvider.itemId, itemId);
-                    cv.put(WendorContentProvider.name, name);
-                    cv.put(WendorContentProvider.price, price);
-                    cv.put(WendorContentProvider.totUnits, totUnits);
-                    cv.put(WendorContentProvider.leftUnits, leftUnits);
-                    cv.put(WendorContentProvider.imageUrl, imageUrl);
+                    cv.put(WendorContentProvider.DBHelper.itemId, itemId);
+                    cv.put(WendorContentProvider.DBHelper.name, name);
+                    cv.put(WendorContentProvider.DBHelper.price, price);
+                    cv.put(WendorContentProvider.DBHelper.totUnits, totUnits);
+                    cv.put(WendorContentProvider.DBHelper.leftUnits, leftUnits);
+                    cv.put(WendorContentProvider.DBHelper.imageUrl, imageUrl);
 
                     //Downloading And Saving Image....
                     ImageLoader imageLoader = new ImageLoader(SplashActivity.appContext);
                     imageLoader.downloadSaveImageFromUrl(imageUrl, name);
                     String imagePath = imageLoader.getFileLocation(name);
 
-                    cv.put(WendorContentProvider.imagePath, imagePath);
+
+                    cv.put(WendorContentProvider.DBHelper.imagePath, imagePath);
 
                     activity.getContentResolver().insert(
                             WendorContentProvider.CONTENT_URI, cv);
