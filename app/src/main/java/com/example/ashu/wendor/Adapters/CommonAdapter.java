@@ -9,11 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.ashu.wendor.Items;
 import com.example.ashu.wendor.R;
 import com.squareup.picasso.Picasso;
-
 import java.io.File;
 import java.util.ArrayList;
 
@@ -44,7 +42,7 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        holder.tvPrice.setText("Rs :" + list.get(position).getPrice());
+        holder.tvPrice.setText("Rs: " + list.get(position).getPrice());
         ContextWrapper cw = new ContextWrapper(c);
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         File myImageFile = new File(directory, list.get(position).getImgPath());

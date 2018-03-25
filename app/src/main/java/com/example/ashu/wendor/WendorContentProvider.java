@@ -15,6 +15,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import static com.example.ashu.wendor.WendorContentProvider.DBHelper.itemId;
+
 /**
  * Created by ashu on 19/3/18.
  */
@@ -22,38 +24,17 @@ import android.widget.Toast;
 public class WendorContentProvider extends ContentProvider {
 
     static final String AUTHORITY = "com.example.ashu.wendor";
-    static final String URL = "content://" + AUTHORITY + "/items";
+    static final String URL = "content://" + AUTHORITY + "/items/#";
     public static final Uri CONTENT_URI = Uri.parse(URL);
     static final int ITEMS = 1;
     static final int ITEM_WITH_ID = 2;
     static final UriMatcher uriMatcher;
-    static final String DATABASE_NAME = "items.db";
-    static final String ITEMS_TABLE_NAME = "items";
-    static final int DATABASE_VERSION = 1;
-    public static String itemId = "itemId";
-    public static String name = "name";
-    public static String price = "price";
-    public static String totUnits = "totUnits";
-    public static String leftUnits = "leftUnits";
-
-    //Database Specific Constant Declarations.......
-    public static String imageUrl = "imageUrl";
-    public static String imagePath = "imagePath";
-    static final String CREATE_DB_TABLE =
-            " CREATE TABLE " + ITEMS_TABLE_NAME +
-                    " ( " + itemId + " INTEGER PRIMARY KEY , "
-                    + name + " TEXT NOT NULL , "
-                    + price + " INTEGER NOT NULL ,"
-                    + totUnits + " INTEGER NOT NULL ,"
-                    + leftUnits + " INTEGER NOT NULL ,"
-                    + imageUrl + " Text NOT NULL ,"
-                    + imagePath + " Text NOT NULL ); ";
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(AUTHORITY, "items", ITEMS);
+        uriMatcher.addURI(AUTHORITY, "items/#", ITEM_WITH_ID);
     }
-
     private SQLiteDatabase db;
 
     @Override
@@ -61,13 +42,8 @@ public class WendorContentProvider extends ContentProvider {
         Context context = getContext();
         DBHelper dbHelper = new DBHelper(context);
 
-        /**
-         * Create a write able database which will trigger its
-         * creation if it doesn't already exist.
-         */
-
         db = dbHelper.getWritableDatabase();
-        return (db == null) ? false : true;
+        return db != null;
     }
 
     @Nullable
@@ -75,7 +51,7 @@ public class WendorContentProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
 
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(ITEMS_TABLE_NAME);
+        qb.setTables(DBHelper.ITEMS_TABLE_NAME);
 
         switch (uriMatcher.match(uri)) {
             case ITEMS:
@@ -111,7 +87,7 @@ public class WendorContentProvider extends ContentProvider {
 
         //Add a new Item ..
 
-        long rowID = db.insert(ITEMS_TABLE_NAME, null, values);
+        long rowID = db.insert(DBHelper.ITEMS_TABLE_NAME, null, values);
         Uri _uri = null;
         /**
          * If record is added successfully
@@ -137,10 +113,50 @@ public class WendorContentProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        int updated = 0;
+
+
+        switch (uriMatcher.match(uri)) {
+            case ITEM_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+                updated = db.update(DBHelper.ITEMS_TABLE_NAME, values, "" + itemId + " = ?", new String[]{id});
+
+                break;
+
+            default:
+                throw new UnsupportedOperationException("unkown uri" + uri);
+        }
+        if (updated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return updated;
     }
 
     public static class DBHelper extends SQLiteOpenHelper {
+        static final String DATABASE_NAME = "items.db";
+        static final String ITEMS_TABLE_NAME = "items";
+        static final int DATABASE_VERSION = 1;
+
+
+        public static String itemId = "itemId";
+        public static String name = "name";
+        public static String price = "price";
+        public static String totUnits = "totUnits";
+        public static String leftUnits = "leftUnits";
+        public static String imageUrl = "imageUrl";
+        public static String imagePath = "imagePath";
+        static final String CREATE_DB_TABLE =
+                " CREATE TABLE " + DBHelper.ITEMS_TABLE_NAME +
+                        " ( " + itemId + " INTEGER PRIMARY KEY , "
+                        + name + " TEXT NOT NULL , "
+                        + price + " INTEGER NOT NULL ,"
+                        + totUnits + " INTEGER NOT NULL ,"
+                        + leftUnits + " INTEGER NOT NULL ,"
+                        + imageUrl + " Text NOT NULL ,"
+                        + imagePath + " Text NOT NULL ); ";
+
+
+
 
         DBHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);

@@ -20,7 +20,6 @@ import java.net.URL;
 public class SplashActivity extends AppCompatActivity {
     public static Context appContext;
     boolean InternetStatus;
-    private String imageDir = "imageDir";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +82,7 @@ public class SplashActivity extends AppCompatActivity {
             String searchResults = null;
             try {
                 InternetStatus = checkInternet();
+                Log.i("Internet Status", "" + InternetStatus);
                 if (InternetStatus)
                     searchResults = NetworkUtility.getResponseFromHttpUrl(searchUrl);
                 else

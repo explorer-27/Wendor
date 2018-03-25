@@ -20,7 +20,7 @@ import java.io.IOException;
  */
 
 public class ImageLoader extends AppCompatActivity {
-    static Target t;
+
     Context c;
     String myImageName;
     private String imageDir = "imageDir";
@@ -36,9 +36,9 @@ public class ImageLoader extends AppCompatActivity {
 
         ContextWrapper cw = new ContextWrapper(c);
         final File directory = cw.getDir(imageDir, Context.MODE_PRIVATE);
+        Log.i("File directory", "" + directory.getAbsolutePath());
 
-
-        t = new Target() {
+        final Target t = new Target() {
             @Override
             public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
                 new Thread(new Runnable() {
@@ -47,7 +47,6 @@ public class ImageLoader extends AppCompatActivity {
                         final File myImageFile = new File(directory, myImageName);
                         Log.i("bitmap", "" + myImageFile.getAbsolutePath());
 
-                        //Toast.makeText(context, "" + myImageFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();// Create image file
                         FileOutputStream fos = null;
                         try {
                             fos = new FileOutputStream(myImageFile);

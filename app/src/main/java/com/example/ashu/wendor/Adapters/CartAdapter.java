@@ -53,6 +53,7 @@ public class CartAdapter extends ArrayAdapter<CartItems> {
                 Toast.makeText(getContext(), currentItem.getItemName() + " Removed", Toast.LENGTH_SHORT).show();
 
                 cartItemstItem.remove(position);
+                CartActivity.cartList.remove(position);
                 notifyDataSetChanged();
 
                 CartActivity.totalValue = CartActivity.totalValue - currentItem.getTotalEach();

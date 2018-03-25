@@ -68,7 +68,7 @@ public class CustomSwipeAdapter extends PagerAdapter {
         } else {
             Picasso.with(context).load(myImageFile).into(imageView);
 
-            Picasso.with(context).setLoggingEnabled(true);
+            //Picasso.with(context).setLoggingEnabled(true);
 
 
         }

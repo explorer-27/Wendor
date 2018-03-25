@@ -37,12 +37,12 @@ public class JsonData {
                     String imageUrl = eachItem.getString("image_url");
 
                     ContentValues cv = new ContentValues();
-                    cv.put(WendorContentProvider.itemId, itemId);
-                    cv.put(WendorContentProvider.name, name);
-                    cv.put(WendorContentProvider.price, price);
-                    cv.put(WendorContentProvider.totUnits, totUnits);
-                    cv.put(WendorContentProvider.leftUnits, leftUnits);
-                    cv.put(WendorContentProvider.imageUrl, imageUrl);
+                    cv.put(WendorContentProvider.DBHelper.itemId, itemId);
+                    cv.put(WendorContentProvider.DBHelper.name, name);
+                    cv.put(WendorContentProvider.DBHelper.price, price);
+                    cv.put(WendorContentProvider.DBHelper.totUnits, totUnits);
+                    cv.put(WendorContentProvider.DBHelper.leftUnits, leftUnits);
+                    cv.put(WendorContentProvider.DBHelper.imageUrl, imageUrl);
 
                     //Downloading And Saving Image....
                     ImageLoader imageLoader = new ImageLoader(SplashActivity.appContext);
@@ -50,7 +50,7 @@ public class JsonData {
                     String imagePath = imageLoader.getFileLocation(name);
 
 
-                    cv.put(WendorContentProvider.imagePath, imagePath);
+                    cv.put(WendorContentProvider.DBHelper.imagePath, imagePath);
 
                     activity.getContentResolver().insert(
                             WendorContentProvider.CONTENT_URI, cv);

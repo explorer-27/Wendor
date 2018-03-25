@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     static ViewPager viewPager;
     static ArrayList<Items> list;
-    static ArrayList<CartItems> cartlist;
+    static ArrayList<CartItems> mCartList;
     static int currentPos;
     static CustomSwipeAdapter adapter;
     Button addToCart;
@@ -38,6 +38,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        getSupportLoaderManager().restartLoader(0, null, this);
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +58,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         list = new ArrayList<>();
-        cartlist = new ArrayList<>();
-
-
-        // specify an adapter (see also next example)
+        mCartList = new ArrayList<>();
 
 
         getSupportLoaderManager().initLoader(0, null, this);
 
-        // listView = findViewById(R.id.listView);
 
         viewPager = findViewById(R.id.view_pager);
         addToCart = findViewById(R.id.add_to_cart);
@@ -107,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                                 cartItem.setQtyEntered(qtyEntered);
                                 cartItem.setTotalEach(qtyEntered * price);
 
-                                cartlist.add(cartItem);
+                                mCartList.add(cartItem);
                                 dialog.dismiss();
                             } else {
                                 Toast.makeText(MainActivity.this,
@@ -135,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         });
 
 
-
     }
 
     @Override
@@ -161,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, WendorContentProvider.CONTENT_URI, null, null, null, WendorContentProvider.name);
+        return new CursorLoader(this, WendorContentProvider.CONTENT_URI, null, null, null, null);
 
     }
 
@@ -173,13 +175,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (data.moveToFirst()) {
             do {
 
-                String name = data.getString(data.getColumnIndex(WendorContentProvider.name));
-                String imageUrl = data.getString(data.getColumnIndex(WendorContentProvider.imageUrl));
-                String imagePath = data.getString(data.getColumnIndex(WendorContentProvider.imagePath));
-                int totUnits = data.getInt(data.getColumnIndex(WendorContentProvider.totUnits));
-                int leftUnits = data.getInt(data.getColumnIndex(WendorContentProvider.leftUnits));
-                int price = data.getInt(data.getColumnIndex(WendorContentProvider.price));
-                int itemId = data.getInt(data.getColumnIndex(WendorContentProvider.itemId));
+                String name = data.getString(data.getColumnIndex(WendorContentProvider.DBHelper.name));
+                String imageUrl = data.getString(data.getColumnIndex(WendorContentProvider.DBHelper.imageUrl));
+                String imagePath = data.getString(data.getColumnIndex(WendorContentProvider.DBHelper.imagePath));
+                int totUnits = data.getInt(data.getColumnIndex(WendorContentProvider.DBHelper.totUnits));
+                int leftUnits = data.getInt(data.getColumnIndex(WendorContentProvider.DBHelper.leftUnits));
+                int price = data.getInt(data.getColumnIndex(WendorContentProvider.DBHelper.price));
+                int itemId = data.getInt(data.getColumnIndex(WendorContentProvider.DBHelper.itemId));
 
                 Items item = new Items();
                 item.setItemId(itemId);
