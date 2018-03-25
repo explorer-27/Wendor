@@ -1,15 +1,11 @@
-package com.example.ashu.wendor.Images;
+package com.example.ashu.wendor.Utility;
 
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -24,29 +20,33 @@ import java.io.IOException;
  */
 
 public class ImageLoader extends AppCompatActivity {
+
     Context c;
+    String myImageName;
     private String imageDir = "imageDir";
+
 
     public ImageLoader(Context context) {
         c = context;
     }
 
     public void downloadSaveImageFromUrl(String url, String imageName) {
-        Picasso.with(c).load(url).into(picassoImageTarget(c, imageDir, imageName));
-    }
 
+        myImageName = imageName;
 
-    private Target picassoImageTarget(Context context, final String imageDir, final String imageName) {
-        Log.d("picassoImageTarget", " picassoImageTarget");
-        ContextWrapper cw = new ContextWrapper(context);
-        final File directory = cw.getDir(imageDir, Context.MODE_PRIVATE); // path to /data/data/yourapp/app_imageDir
-        return new Target() {
+        ContextWrapper cw = new ContextWrapper(c);
+        final File directory = cw.getDir(imageDir, Context.MODE_PRIVATE);
+        Log.i("File directory", "" + directory.getAbsolutePath());
+
+        final Target t = new Target() {
             @Override
             public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        final File myImageFile = new File(directory, imageName); // Create image file
+                        final File myImageFile = new File(directory, myImageName);
+                        Log.i("bitmap", "" + myImageFile.getAbsolutePath());
+
                         FileOutputStream fos = null;
                         try {
                             fos = new FileOutputStream(myImageFile);
@@ -83,6 +83,8 @@ public class ImageLoader extends AppCompatActivity {
                 }
             }
         };
+
+        Picasso.with(c).load(url).into(t);
     }
 
     public String getFileLocation(String path) {
